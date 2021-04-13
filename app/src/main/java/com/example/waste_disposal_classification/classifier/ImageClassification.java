@@ -40,7 +40,7 @@ public class ImageClassification {
 
     public ImageClassification(Activity activity) throws IOException {
         //load the model
-        MappedByteBuffer classifierModel = FileUtil.loadMappedFile(activity, "mobilenet_v1_1.0_224_quant.tflite");
+        MappedByteBuffer classifierModel = FileUtil.loadMappedFile(activity, "model.tflite");
         labels = FileUtil.loadLabels(activity, "labels_mobilnet_quant_v1_224.txt");
         tensorClassifier = new Interpreter(classifierModel, null);
 
