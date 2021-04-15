@@ -10,12 +10,13 @@
         android:id="@+id/camera_capture"
         android:layout_width="0dp"
         android:layout_height="191dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:contentDescription="@string/description_camera_capture"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/recycle"/>
+        tools:src="@drawable/recycle" />
 
     <Button
         android:id="@+id/btn_capture_image"
@@ -39,14 +40,27 @@
 
     <ListView
         android:id="@+id/listview_prediction"
-        android:layout_width="367dp"
-        android:layout_height="279dp"
+        android:layout_width="362dp"
+        android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_capture_image" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_capture_image"
+        app:layout_constraintVertical_bias="0.073" />
+
+    <ImageView
+        android:id="@+id/result"
+        android:layout_width="0dp"
+        android:layout_height="191dp"
+        android:layout_marginTop="384dp"
+        android:contentDescription="@string/description_camera_capture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

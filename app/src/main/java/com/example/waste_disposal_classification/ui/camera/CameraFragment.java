@@ -46,6 +46,7 @@ public class CameraFragment extends Fragment {
     private Button captureBtn;
     private Button uploadBtn;
     private ImageView imageView;
+    private ImageView imageView2;
     private ListView listViewPrediction;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -61,6 +62,7 @@ public class CameraFragment extends Fragment {
         captureBtn = root.findViewById(R.id.btn_capture_image);
         uploadBtn = root.findViewById(R.id.btn_upload_image);
         imageView = root.findViewById(R.id.camera_capture);
+        imageView2 = (ImageView) root.findViewById(R.id.result);
         listViewPrediction = root.findViewById(R.id.listview_prediction);
         try {
             imageClassifier = new ImageClassification(getActivity());
@@ -182,11 +184,19 @@ public class CameraFragment extends Fragment {
         imageView.setImageBitmap(bitmap);
         List<Recognition> predictions = imageClassifier.recognizeImage(bitmap, 0);
         final List<String> predictionsList = new ArrayList<>();
+        String item = null;
         for (Recognition recog : predictions) {
             predictionsList.add(recog.getName() + " :::::: " + recog.getConfidence());
+            item = recog.getName();
         }
         ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, predictionsList);
         listViewPrediction.setAdapter(predictionsAdapter);
+
+        if(item.equals("paper") || item.equals("cardboard") || item.equals("glass")){
+            imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
+        } else{
+            imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
+        }
     }
 
     private boolean hasAllPermissions(int[] grantResults) {

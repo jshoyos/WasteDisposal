@@ -10,4 +10,6 @@
     <string name="input_code_title_text">Enter Resin identification code</string>
     <string name="input_code_text">code (1-7)</string>
     <string name="btn_code_text">Submit</string>
+    <string name="description_code_image">Code Image</string>
+    <string name="description_news_images">News Image</string>
 </resources>
