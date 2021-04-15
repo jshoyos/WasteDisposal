@@ -13,6 +13,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.waste_disposal_classification.R;
+import com.example.waste_disposal_classification.classifier.ImageClassification;
+
+import java.io.IOException;
 
 public class NotificationsFragment extends Fragment {
 
@@ -23,13 +26,42 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+       // initUIElements(root);
+
         return root;
     }
+
+//    private void initUIElements(View root) {
+//        captureBtn = root.findViewById(R.id.btn_capture_image);
+//        uploadBtn = root.findViewById(R.id.btn_upload_image);
+//        imageView = root.findViewById(R.id.camera_capture);
+//        listViewPrediction = root.findViewById(R.id.listview_prediction);
+//        try {
+//            imageClassifier = new ImageClassification(getActivity());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        captureBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (hasPermission()){
+//                    openCamera();
+//                }
+//                else{
+//                    requestPermission();
+//                }
+//            }
+//        });
+//        uploadBtn.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                if(hasGalleryPermission()){
+//                    openGallery();
+//                }
+//                else{
+//                    requestGalleryPermission();
+//                }
+//            }
+//        });
+//    }
 }

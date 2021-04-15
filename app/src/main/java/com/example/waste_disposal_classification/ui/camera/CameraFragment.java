@@ -54,12 +54,6 @@ public class CameraFragment extends Fragment {
                 new ViewModelProvider(this).get(CameraViewModel.class);
         View root = inflater.inflate(R.layout.fragment_camera, container, false);
         initUIElements(root);
-//        cameraViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                //textView.setText(s);
-//            }
-//        });
         return root;
     }
 
