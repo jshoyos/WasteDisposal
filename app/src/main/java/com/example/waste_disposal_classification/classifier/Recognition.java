@@ -1,43 +1,35 @@
 package com.example.waste_disposal_classification.classifier;
 
-public class Recognition implements  Comparable {
-    private  String name;
-    private float confidence;
+public class Recognition{
+    private final  String id;
+    private  final String title;
+    private final Float confidence;
 
-    public Recognition() {
-    }
-
-    public Recognition(String name, float confidence) {
-        this.name = name;
+    public Recognition(String id, String title, Float confidence) {
+        this.id = id;
+        this.title = title;
         this.confidence = confidence;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getTitle() {
+        return title;
     }
 
-    public float getConfidence() {
+    public Float getConfidence() {
         return confidence;
-    }
-
-    public void setConfidence(float confidence) {
-        this.confidence = confidence;
     }
 
     @Override
     public String toString() {
         return "Recognition{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", confidence=" + confidence +
                 '}';
     }
-
-    @Override
-    public int compareTo(Object o) {
-        return Float.compare(((Recognition) o).confidence, this.confidence);
-    }
 }
+
