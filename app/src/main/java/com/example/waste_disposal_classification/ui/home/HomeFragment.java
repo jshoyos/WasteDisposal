@@ -10,20 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.waste_disposal_classification.MainActivity;
 import com.example.waste_disposal_classification.R;
-import com.example.waste_disposal_classification.classifier.ImageClassification;
 
-import java.io.IOException;
 
 public class HomeFragment extends Fragment {
     private Button submitBtn;

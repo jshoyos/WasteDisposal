@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.waste_disposal_classification"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -45,9 +45,8 @@ dependencies {
     implementation 'com.github.KwabenBerko:News-API-Java:1.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation ('org.tensorflow:tensorflow-lite:0.0.0-nightly') { changing = true }
-    implementation ('org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly') { changing = true }
-    implementation ('org.tensorflow:tensorflow-lite-support:0.0.0-nightly') { changing = true }
+    implementation 'org.tensorflow:tensorflow-lite-task-vision:0.1.0'
+    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
