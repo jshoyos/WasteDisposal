@@ -21,11 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.waste_disposal_classification.R;
-import com.example.waste_disposal_classification.classifier.ImageClassification;
+import com.example.waste_disposal_classification.classifier.Classifier;
 import com.example.waste_disposal_classification.classifier.Recognition;
 
 import java.io.IOException;
@@ -33,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
 public class CameraFragment extends Fragment {
 
@@ -42,7 +40,7 @@ public class CameraFragment extends Fragment {
     private static final int STORAGE_PERMISSION_REQUEST_CODE = 4000;
     private static final int STORAGE_REQUEST_CODE = 4001;
     private CameraViewModel cameraViewModel;
-    private ImageClassification imageClassifier;
+    private Classifier imageClassifier;
     private Button captureBtn;
     private Button uploadBtn;
     private ImageView imageView;
@@ -69,7 +67,7 @@ public class CameraFragment extends Fragment {
         imageView = root.findViewById(R.id.camera_capture);
         listViewPrediction = root.findViewById(R.id.listview_prediction);
         try {
-            imageClassifier = new ImageClassification(getActivity());
+            imageClassifier = new Classifier(getContext());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -166,13 +164,15 @@ public class CameraFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == CAMERA_REQUEST_CODE){
             Bitmap photo = (Bitmap) Objects.requireNonNull((data).getExtras()).get("data");
-            predict(photo);
+            imageView.setImageBitmap(photo);
+            display(imageClassifier.recognizeImage(photo));
         }
         else if(requestCode == STORAGE_REQUEST_CODE){
             if (data != null) {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
-                    predict(bitmap);
+                    imageView.setImageBitmap(bitmap);
+                    display(imageClassifier.recognizeImage(bitmap));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -184,12 +184,31 @@ public class CameraFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void predict(Bitmap bitmap) {
-        imageView.setImageBitmap(bitmap);
-        List<Recognition> predictions = imageClassifier.recognizeImage(bitmap, 0);
+    private void display(List<Recognition> results) {
         final List<String> predictionsList = new ArrayList<>();
-        for (Recognition recog : predictions) {
-            predictionsList.add(recog.getName() + " :::::: " + recog.getConfidence());
+        for (Recognition recog : results) {
+            String category;
+            switch (recog.getTitle()){
+                case "0":
+                    category = "plastic";
+                    break;
+                case "1":
+                    category = "paper";
+                    break;
+                case "2":
+                    category = "metal";
+                    break;
+                case "3":
+                    category = "cardboard";
+                    break;
+                case "4":
+                    category = "glass";
+                    break;
+                default:
+                    category = "trash";
+                    break;
+            }
+            predictionsList.add(category + " :::::: " + recog.getConfidence());
         }
         ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, predictionsList);
         listViewPrediction.setAdapter(predictionsAdapter);
