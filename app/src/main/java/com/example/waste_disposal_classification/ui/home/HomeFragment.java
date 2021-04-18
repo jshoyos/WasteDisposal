@@ -1,14 +1,17 @@
 package com.example.waste_disposal_classification.ui.home;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,16 +48,25 @@ public class HomeFragment extends Fragment {
         codeInput = (EditText) root.findViewById(R.id.input_code);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            //TODO: add exception handling for when code is not between 1-7
             public void onClick(View v) {
-                code = Integer.valueOf(codeInput.getText().toString());
+                codeInput.onEditorAction(EditorInfo.IME_ACTION_DONE);
                 imageView = (ImageView) root.findViewById(R.id.images);
                 try
                 {
+                    code = Integer.valueOf(codeInput.getText().toString());
+                    if(code > 7 || code < 1){
+                        throw new IndexOutOfBoundsException();
+                    }
                     imageView.setImageResource(images[code-1]);
                 }
+                catch(IndexOutOfBoundsException e){
+
+                    Toast toast = Toast.makeText(getContext(),"Invalid code: please enter a code that is  between 1 and 7", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 100);
+                    toast.show();
+                }
                 catch (Exception e){
-                    e.printStackTrace();
+                    Toast.makeText(getContext(),"Invalid input: enter a code between 1 and 7", Toast.LENGTH_SHORT).show();
                 }
             }
         });
