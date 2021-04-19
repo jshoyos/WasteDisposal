@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">GreenBin</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
+    <string name="title_code">Identification Code</string>
     <string name="title_camera">Camera</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_news">News</string>
     <string name="description_camera_capture">Camera capture view</string>
     <string name="btn_capture_image_text">Capture</string>
     <string name="btn_upload_image_text">Upload</string>
+    <string name="input_code_title_text">Enter Resin identification code</string>
+    <string name="input_code_text">code (1-7)</string>
+    <string name="btn_code_text">Submit</string>
+    <string name="description_code_image">Code Image</string>
+    <string name="description_news_images">News Image</string>
 </resources>

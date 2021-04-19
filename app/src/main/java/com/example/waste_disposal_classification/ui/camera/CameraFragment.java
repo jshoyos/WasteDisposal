@@ -44,6 +44,7 @@ public class CameraFragment extends Fragment {
     private Button captureBtn;
     private Button uploadBtn;
     private ImageView imageView;
+    private ImageView imageView2;
     private ListView listViewPrediction;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,12 +53,6 @@ public class CameraFragment extends Fragment {
                 new ViewModelProvider(this).get(CameraViewModel.class);
         View root = inflater.inflate(R.layout.fragment_camera, container, false);
         initUIElements(root);
-//        cameraViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                //textView.setText(s);
-//            }
-//        });
         return root;
     }
 
@@ -65,6 +60,7 @@ public class CameraFragment extends Fragment {
         captureBtn = root.findViewById(R.id.btn_capture_image);
         uploadBtn = root.findViewById(R.id.btn_upload_image);
         imageView = root.findViewById(R.id.camera_capture);
+        imageView2 = (ImageView) root.findViewById(R.id.result);
         listViewPrediction = root.findViewById(R.id.listview_prediction);
         try {
             imageClassifier = new Classifier(getContext());
@@ -186,32 +182,41 @@ public class CameraFragment extends Fragment {
 
     private void display(List<Recognition> results) {
         final List<String> predictionsList = new ArrayList<>();
+
         for (Recognition recog : results) {
             String category;
             switch (recog.getTitle()){
                 case "0":
+                    imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
                     category = "plastic";
                     break;
                 case "1":
+                    imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
                     category = "paper";
                     break;
                 case "2":
+                    imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
                     category = "metal";
                     break;
                 case "3":
+                    imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
                     category = "cardboard";
                     break;
                 case "4":
+                    imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
                     category = "glass";
                     break;
                 default:
+                    imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
                     category = "trash";
                     break;
             }
             predictionsList.add(category + " :::::: " + recog.getConfidence());
+
         }
         ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, predictionsList);
         listViewPrediction.setAdapter(predictionsAdapter);
+
     }
 
     private boolean hasAllPermissions(int[] grantResults) {
