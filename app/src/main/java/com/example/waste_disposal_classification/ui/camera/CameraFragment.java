@@ -21,11 +21,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.waste_disposal_classification.R;
 import com.example.waste_disposal_classification.classifier.Classifier;
 import com.example.waste_disposal_classification.classifier.Recognition;
+import com.example.waste_disposal_classification.ui.home.HomeFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class CameraFragment extends Fragment {
     private Classifier imageClassifier;
     private Button captureBtn;
     private Button uploadBtn;
+    private Button redirectButton;
     private ImageView imageView;
     private ImageView imageView2;
     private ListView listViewPrediction;
@@ -62,6 +65,7 @@ public class CameraFragment extends Fragment {
         imageView = root.findViewById(R.id.camera_capture);
         imageView2 = (ImageView) root.findViewById(R.id.result);
         listViewPrediction = root.findViewById(R.id.listview_prediction);
+        redirectButton = (Button) root.findViewById(R.id.Redirect_button);
         try {
             imageClassifier = new Classifier(getContext());
         } catch (IOException e) {
@@ -185,10 +189,20 @@ public class CameraFragment extends Fragment {
 
         for (Recognition recog : results) {
             String category;
+            redirectButton.setVisibility(View.INVISIBLE);
+            imageView2.setImageResource(0);
             switch (recog.getTitle()){
                 case "0":
-                    imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
                     category = "plastic";
+                    redirectButton.setVisibility(View.VISIBLE);
+                    redirectButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            FragmentTransaction fragmentTransaction =getParentFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.nav_host_fragment,new HomeFragment());
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                        }
+                    });
                     break;
                 case "1":
                     imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
@@ -211,7 +225,8 @@ public class CameraFragment extends Fragment {
                     category = "trash";
                     break;
             }
-            predictionsList.add(category + " :::::: " + recog.getConfidence());
+
+            predictionsList.add("Detected " +category + " with " + String.format("%.2f",recog.getConfidence()*100) + "% accuracy.");
 
         }
         ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, predictionsList);
