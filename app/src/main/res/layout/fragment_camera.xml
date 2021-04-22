@@ -75,6 +75,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/result"
-        app:layout_constraintVertical_bias="0.269" />
+        app:layout_constraintVertical_bias="0.388" />
+
+    <TextView
+        android:id="@+id/plastic_text_view"
+        android:layout_width="245dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="78dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/plastic_text"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/Redirect_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/result" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

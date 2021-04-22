@@ -13,4 +13,5 @@
     <string name="description_code_image">Code Image</string>
     <string name="description_news_images">News Image</string>
     <string name="btn_redirect_text">Plastic Code</string>
+    <string name="plastic_text">Plastic requires additional assessment</string>
 </resources>

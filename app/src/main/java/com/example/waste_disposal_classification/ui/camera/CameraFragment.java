@@ -15,13 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -29,12 +29,10 @@ import androidx.navigation.Navigation;
 import com.example.waste_disposal_classification.R;
 import com.example.waste_disposal_classification.classifier.Classifier;
 import com.example.waste_disposal_classification.classifier.Recognition;
-import com.example.waste_disposal_classification.ui.home.HomeFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class CameraFragment extends Fragment {
@@ -51,6 +49,7 @@ public class CameraFragment extends Fragment {
     private ImageView imageView;
     private ImageView imageView2;
     private ListView listViewPrediction;
+    private TextView textView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +67,7 @@ public class CameraFragment extends Fragment {
         imageView2 = (ImageView) root.findViewById(R.id.result);
         listViewPrediction = root.findViewById(R.id.listview_prediction);
         redirectButton = (Button) root.findViewById(R.id.Redirect_button);
+        textView = (TextView) root.findViewById(R.id.plastic_text_view);
         try {
             imageClassifier = new Classifier(getContext());
         } catch (IOException e) {
@@ -198,11 +198,13 @@ public class CameraFragment extends Fragment {
 
         for (Recognition recog : results) {
             String category;
+            textView.setVisibility(View.INVISIBLE);
             redirectButton.setVisibility(View.INVISIBLE);
             imageView2.setImageResource(0);
             switch (recog.getTitle()){
                 case "0":
                     category = "plastic";
+                    textView.setVisibility(View.VISIBLE);
                     redirectButton.setVisibility(View.VISIBLE);
                     redirectButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -212,23 +214,23 @@ public class CameraFragment extends Fragment {
                     });
                     break;
                 case "1":
-                    imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
+                    imageView2.setImageResource(R.drawable.recyclingsymbol);
                     category = "paper";
                     break;
                 case "2":
-                    imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
+                    imageView2.setImageResource(R.drawable.norecycling);
                     category = "metal";
                     break;
                 case "3":
-                    imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
+                    imageView2.setImageResource(R.drawable.recyclingsymbol);
                     category = "cardboard";
                     break;
                 case "4":
-                    imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
+                    imageView2.setImageResource(R.drawable.recyclingsymbol);
                     category = "glass";
                     break;
                 default:
-                    imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
+                    imageView2.setImageResource(R.drawable.norecycling);
                     category = "trash";
                     break;
             }
