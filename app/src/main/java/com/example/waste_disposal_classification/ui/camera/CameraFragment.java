@@ -23,6 +23,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.waste_disposal_classification.R;
 import com.example.waste_disposal_classification.classifier.Classifier;
@@ -162,10 +164,17 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE){
-            Bitmap photo = (Bitmap) Objects.requireNonNull((data).getExtras()).get("data");
-            imageView.setImageBitmap(photo);
-            display(imageClassifier.recognizeImage(photo));
+            try{
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                imageView.setImageBitmap(photo);
+                display(imageClassifier.recognizeImage(photo));
+            }
+            catch(Exception e){
+                Toast.makeText(getActivity(), "Camera Closed", Toast.LENGTH_SHORT).show();
+            }
+
         }
         else if(requestCode == STORAGE_REQUEST_CODE){
             if (data != null) {
@@ -181,7 +190,7 @@ public class CameraFragment extends Fragment {
         else if(requestCode == Activity.RESULT_CANCELED){
             Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     private void display(List<Recognition> results) {
@@ -197,10 +206,8 @@ public class CameraFragment extends Fragment {
                     redirectButton.setVisibility(View.VISIBLE);
                     redirectButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            FragmentTransaction fragmentTransaction =getParentFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.nav_host_fragment,new HomeFragment());
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
+                            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                            navController.navigate(R.id.navigation_home);
                         }
                     });
                     break;
