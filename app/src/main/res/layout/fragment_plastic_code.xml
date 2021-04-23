@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     tools:context=".ui.plasticcode.PlasticCodeFragment">
 
     <ImageView
@@ -42,13 +41,14 @@
         android:id="@+id/input_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#000000"
         android:ems="5"
         android:hint="@string/input_code_text"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:labelFor="@+id/input_code"
         android:textAlignment="center"
-        android:textColor="@color/grey"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.32"
@@ -70,9 +70,9 @@
 
     <TextView
         android:id="@+id/recyclable_result_text"
-        android:layout_width="162dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="121dp"
+        android:layout_width="209dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:textAlignment="center"
