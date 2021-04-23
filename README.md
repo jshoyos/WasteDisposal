@@ -1,6 +1,6 @@
 # WasteDisposal
 
-In order to run the application in an android device follow the follwing steps:
+In order to run the application in an android device follow the stpes below:
 - In your mobile settings enable installation from unknown sources
 - Download our apk file on your android device `https://github.com/jshoyos/WasteDisposal/blob/main/app-debug.apk`
 - Install the application by executing the apk file
