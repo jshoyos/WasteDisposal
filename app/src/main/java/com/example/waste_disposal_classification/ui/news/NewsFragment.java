@@ -1,4 +1,4 @@
-package com.example.waste_disposal_classification.ui.notifications;
+package com.example.waste_disposal_classification.ui.news;
 
 import android.Manifest;
 import android.content.Context;
@@ -25,17 +25,28 @@ import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
 
 import java.util.List;
 
-public class NotificationsFragment extends Fragment {
+/**
+ * News fragment used to display news api with different recycling articles
+ */
+public class NewsFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private NewsViewModel newsViewModel;
     private int PERMISSION_ALL = 1;
     String[] PERMISSIONS = { Manifest.permission.INTERNET};
     private List<Article> articles;
     private RecyclerView recyclerView;
 
+
+    /**
+     * Displays the news articles from the api based on "recycling" key word
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel = new ViewModelProvider(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_news, container, false);
         recyclerView = root.findViewById(R.id.recyclerView);
 
         if (!hasPermission(getContext(), PERMISSIONS)){
@@ -68,6 +79,9 @@ public class NotificationsFragment extends Fragment {
         return root;
     }
 
+    /**
+     *  Sets the recycling adapter with the articles list
+     */
     private void setAdapter() {
         recyclerAdapter adapter = new recyclerAdapter(articles);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -76,6 +90,12 @@ public class NotificationsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Checks permissions
+     * @param context
+     * @param permissions
+     * @return
+     */
     private boolean hasPermission(Context context, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context!=null && permissions != null){
            for (String permission : permissions){

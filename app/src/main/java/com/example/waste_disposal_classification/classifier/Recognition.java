@@ -1,5 +1,9 @@
 package com.example.waste_disposal_classification.classifier;
 
+/**
+ * Class for result of classification
+ */
+
 public class Recognition{
     private final  String id;
     private  final String title;
