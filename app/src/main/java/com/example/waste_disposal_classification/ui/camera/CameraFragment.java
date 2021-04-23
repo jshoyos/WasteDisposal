@@ -11,10 +11,9 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.waste_disposal_classification.R;
 import com.example.waste_disposal_classification.classifier.Classifier;
@@ -30,9 +31,10 @@ import com.example.waste_disposal_classification.classifier.Recognition;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-
+/**
+ *  Camera fragment that is used for uploading, capturing and classifying images
+ */
 public class CameraFragment extends Fragment {
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 1000;
@@ -43,9 +45,11 @@ public class CameraFragment extends Fragment {
     private Classifier imageClassifier;
     private Button captureBtn;
     private Button uploadBtn;
+    private Button redirectButton;
     private ImageView imageView;
     private ImageView imageView2;
-    private ListView listViewPrediction;
+    private TextView textViewPrediction;
+    private TextView textView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,12 +60,18 @@ public class CameraFragment extends Fragment {
         return root;
     }
 
+    /**
+     * initializes variables and sets onclick events
+     * @param root
+     */
     private void initUIElements(View root) {
         captureBtn = root.findViewById(R.id.btn_capture_image);
         uploadBtn = root.findViewById(R.id.btn_upload_image);
         imageView = root.findViewById(R.id.camera_capture);
         imageView2 = (ImageView) root.findViewById(R.id.result);
-        listViewPrediction = root.findViewById(R.id.listview_prediction);
+        textViewPrediction = (TextView) root.findViewById(R.id.listview_prediction);
+        redirectButton = (Button) root.findViewById(R.id.Redirect_button);
+        textView = (TextView) root.findViewById(R.id.plastic_text_view);
         try {
             imageClassifier = new Classifier(getContext());
         } catch (IOException e) {
@@ -91,6 +101,9 @@ public class CameraFragment extends Fragment {
         });
     }
 
+    /**
+     * Gets the gallery permissions
+     */
     private void requestGalleryPermission() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
@@ -100,6 +113,9 @@ public class CameraFragment extends Fragment {
         }
     }
 
+    /**
+     * This method opens the android device's image gallery
+     */
     private void openGallery() {
         Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
@@ -107,6 +123,10 @@ public class CameraFragment extends Fragment {
         startActivityForResult(Intent.createChooser(galleryIntent,"Select Image"), STORAGE_REQUEST_CODE);;
     }
 
+    /**
+     * Checks the gallery permissions
+     * @return boolean
+     */
     private boolean hasGalleryPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
@@ -114,6 +134,9 @@ public class CameraFragment extends Fragment {
         return true;
     }
 
+    /**
+     * Gets the camera permissions
+     */
     private void requestPermission() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
@@ -123,11 +146,17 @@ public class CameraFragment extends Fragment {
         }
     }
 
+    /**
+     * This method opens the android device's image gallery
+     */
     private void openCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent,CAMERA_REQUEST_CODE);
     }
-
+    /**
+     * Checks the camera permissions
+     * @return boolean
+     */
     private boolean hasPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
@@ -136,6 +165,9 @@ public class CameraFragment extends Fragment {
     }
 
     @Override
+    /**
+     * This method opens the respective internal device resource depending on the request code and correct permissions
+     */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == CAMERA_PERMISSION_REQUEST_CODE){
@@ -156,12 +188,26 @@ public class CameraFragment extends Fragment {
         }
     }
 
+    /**
+     * This method takes the image from the device and calls the predict function
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE){
-            Bitmap photo = (Bitmap) Objects.requireNonNull((data).getExtras()).get("data");
-            imageView.setImageBitmap(photo);
-            display(imageClassifier.recognizeImage(photo));
+            try{
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                imageView.setImageBitmap(photo);
+                display(imageClassifier.recognizeImage(photo));
+            }
+            catch(Exception e){
+                Toast.makeText(getActivity(), "Camera Closed", Toast.LENGTH_SHORT).show();
+            }
+
         }
         else if(requestCode == STORAGE_REQUEST_CODE){
             if (data != null) {
@@ -177,48 +223,65 @@ public class CameraFragment extends Fragment {
         else if(requestCode == Activity.RESULT_CANCELED){
             Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
+    /**
+     * Displays the resulting classification
+     * @param results
+     */
     private void display(List<Recognition> results) {
         final List<String> predictionsList = new ArrayList<>();
 
         for (Recognition recog : results) {
             String category;
+            textView.setVisibility(View.INVISIBLE);
+            redirectButton.setVisibility(View.INVISIBLE);
+            imageView2.setImageResource(0);
             switch (recog.getTitle()){
                 case "0":
-                    imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
                     category = "plastic";
+                    textView.setVisibility(View.VISIBLE);
+                    redirectButton.setVisibility(View.VISIBLE);
+                    redirectButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                            navController.navigate(R.id.navigation_plastic_code);
+                        }
+                    });
                     break;
                 case "1":
-                    imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
+                    imageView2.setImageResource(R.drawable.recyclingsymbol);
                     category = "paper";
                     break;
                 case "2":
-                    imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
+                    imageView2.setImageResource(R.drawable.norecycling);
                     category = "metal";
                     break;
                 case "3":
-                    imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
+                    imageView2.setImageResource(R.drawable.recyclingsymbol);
                     category = "cardboard";
                     break;
                 case "4":
-                    imageView2.setImageResource(R.drawable.ic_baseline_check_circle_24);
+                    imageView2.setImageResource(R.drawable.recyclingsymbol);
                     category = "glass";
                     break;
                 default:
-                    imageView2.setImageResource(R.drawable.ic_baseline_cancel_24);
+                    imageView2.setImageResource(R.drawable.norecycling);
                     category = "trash";
                     break;
             }
-            predictionsList.add(category + " :::::: " + recog.getConfidence());
+
+            predictionsList.add("Detected " +category + " with " + String.format("%.2f",recog.getConfidence()*100) + "% accuracy.");
 
         }
-        ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, predictionsList);
-        listViewPrediction.setAdapter(predictionsAdapter);
-
+        textViewPrediction.setText(predictionsList.get(0));
     }
 
+    /**
+     * Checks the overall permissions
+     * @return boolean
+     */
     private boolean hasAllPermissions(int[] grantResults) {
         for(int result : grantResults){
             if(result == PackageManager.PERMISSION_DENIED){

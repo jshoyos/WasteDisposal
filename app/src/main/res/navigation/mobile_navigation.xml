@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_camera">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.waste_disposal_classification.ui.home.HomeFragment"
+        android:id="@+id/navigation_plastic_code"
+        android:name="com.example.waste_disposal_classification.ui.plasticcode.PlasticCodeFragment"
         android:label="@string/title_code"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_plastic_code" />
 
     <fragment
         android:id="@+id/navigation_camera"
@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_camera" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.waste_disposal_classification.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_news"
+        android:name="com.example.waste_disposal_classification.ui.news.NewsFragment"
         android:label="@string/title_news"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_news" />
 </navigation>

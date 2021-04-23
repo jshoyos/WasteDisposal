@@ -1,4 +1,4 @@
-package com.example.waste_disposal_classification.ui.notifications;
+package com.example.waste_disposal_classification.ui.news;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,10 @@ import com.squareup.picasso.Picasso;
 
 
 import java.util.List;
+
+/**
+ *  Adapter class to used for the news type
+ */
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
 

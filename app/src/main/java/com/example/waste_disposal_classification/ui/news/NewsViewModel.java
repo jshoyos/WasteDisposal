@@ -1,16 +1,18 @@
-package com.example.waste_disposal_classification.ui.home;
+package com.example.waste_disposal_classification.ui.news;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-public class HomeViewModel extends ViewModel {
+/**
+ * View model for News fragment
+ */
+public class NewsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public NewsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is news fragment");
     }
 
     public LiveData<String> getText() {

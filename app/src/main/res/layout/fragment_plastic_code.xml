@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
-
+    tools:context=".ui.plasticcode.PlasticCodeFragment">
 
     <ImageView
         android:id="@+id/images"
@@ -15,14 +14,15 @@
         android:contentDescription="@string/description_code_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.711" />
+        app:layout_constraintVertical_bias="0.742" />
 
     <TextView
         android:id="@+id/text_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="294dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -32,22 +32,23 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.386"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.14" />
+        app:layout_constraintVertical_bias="0.031" />
 
     <EditText
         android:id="@+id/input_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#000000"
         android:ems="5"
         android:hint="@string/input_code_text"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:labelFor="@+id/input_code"
         android:textAlignment="center"
-        android:textColor="@color/grey"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.32"
@@ -66,5 +67,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_home"
         app:layout_constraintVertical_bias="0.072" />
+
+    <TextView
+        android:id="@+id/recyclable_result_text"
+        android:layout_width="209dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/images"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_code" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="29dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="115dp"
+        android:src="@drawable/ic_baseline_info_24"
+        android:tooltipText="@string/tooltip_code_text"
+        app:layout_constraintBottom_toTopOf="@+id/images"
+        app:layout_constraintStart_toEndOf="@+id/text_home"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.481" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

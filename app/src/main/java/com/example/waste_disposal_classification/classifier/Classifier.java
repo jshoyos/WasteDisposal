@@ -19,6 +19,11 @@ import java.util.List;
 
 import static java.lang.Math.min;
 
+
+/**
+ *  This class is in charge of loading our trained model and performs our image recognition process
+ */
+
 public class Classifier {
     private static final int MAX_RESULTS = 1;
     public static final String FILE_PATH = "model.tflite";
